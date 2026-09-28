@@ -4,6 +4,7 @@
 {
   config,
   lib,
+  pkgs,
   modulesPath,
   ...
 }:
@@ -27,10 +28,10 @@
   };
 
   boot.initrd.luks.devices."cryptroot".device =
-    "/dev/disk/by-uuid/1d28d740-27bd-4ade-b5f7-d2149c3bdffc";
+    "/dev/disk/by-uuid/33a2de4f-0ed0-41fb-abd6-87edc884de52";
 
   fileSystems."/boot" = {
-    device = "/dev/disk/by-uuid/B4A5-DB3A";
+    device = "/dev/disk/by-uuid/DC06-62AC";
     fsType = "vfat";
     options = [
       "fmask=0077"
@@ -38,7 +39,12 @@
     ];
   };
 
-  swapDevices = [ { device = "/.swapfile"; } ];
+  swapDevices = [
+    {
+      device = "/swapfile";
+      size = 16 * 1024; # 16 GiB
+    }
+  ];
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
