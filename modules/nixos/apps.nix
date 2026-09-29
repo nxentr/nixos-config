@@ -14,6 +14,7 @@ in
     gaming.enable = lib.mkEnableOption "Gaming (Steam + gamescope)";
     docker.enable = lib.mkEnableOption "Rootless Docker";
     vm.enable = lib.mkEnableOption "VM stack (libvirt + virt-manager)";
+    vm-user.enable = lib.mkEnableOption "VM qemu:///session stack (libvirt + virt-manager)";
     llm.enable = lib.mkEnableOption "LLM stack (llama.cpp + ROCm)";
   };
 
@@ -90,6 +91,21 @@ in
           ${pkgs.iproute2}/bin/ip rule del to 192.168.122.0/24 lookup main priority 10 2>/dev/null || true
           ${pkgs.iproute2}/bin/ip rule add to 192.168.122.0/24 lookup main priority 10
         '';
+      })
+
+      (lib.mkIf cfg.vm-user.enable {
+        programs.virt-manager.enable = true;
+
+        environment.systemPackages = with pkgs; [
+          libvirt
+          qemu_kvm
+          passt
+          swtpm
+        ];
+
+        environment.sessionVariables.LIBVIRT_DEFAULT_URI = "qemu:///session";
+
+        environment.etc."qemu/firmware".source = "${pkgs.qemu_kvm}/share/qemu/firmware";
       })
 
       (lib.mkIf cfg.llm.enable {
