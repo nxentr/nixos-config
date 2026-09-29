@@ -20,7 +20,7 @@
         scale = "1";
       }
     ];
-    apps.vm.enable = true;
+    apps.vm-user.enable = true;
     apps.gaming.enable = true;
 
     hardening.kernel.strict.enable = true;
