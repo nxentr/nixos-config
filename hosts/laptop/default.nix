@@ -11,6 +11,7 @@
   modules = {
     hardware.intel.enable = true;
     hardware.es8336.enable = true;
+    hardware.yubikey.lockOnRemove = true;
     desktop.hyprland.monitors = [
       {
         output = "eDP-1";

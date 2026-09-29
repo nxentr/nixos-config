@@ -39,6 +39,10 @@
       network.enable = true;
       modules.enable = true;
     };
+    hardware.yubikey = {
+      enable = true;
+      pam.enable = true;
+    };
   };
 
   services.printing.enable = false;
